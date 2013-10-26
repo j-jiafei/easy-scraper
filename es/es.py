@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import logging
 import sys
 import urllib2
@@ -57,14 +59,14 @@ if __name__ == '__main__':
   url = 'https://news.ycombinator.com/'
   sample = [
     {
-      "title": "How to lose $172,222 a second for 45 minutes",
-      "url": "http://pythonsweetness.tumblr.com/post/64740079543/how-to-lose-172-222-a-second-for-45-minutes",
-      "link": "pythonsweetness.tumblr.com"
+      "title": "Mac OS 10.9 – Infinity times your spam",
+      "url": "http://blog.fastmail.fm/2013/10/26/mac-os-10-9-infinity-times-your-spam/",
+      "link": "fastmail.fm",
     },
     {
-      "title": "Dawn of Autonomous Corporations, Powered by Bitcoin",
-      "url": "http://btcgeek.com/dawn-of-autonomous-corporations/",
-      "link": "btcgeek.com"
+      "title": "Confessions of a Drone Warrior",
+      "url": "http://www.gq.com/news-politics/big-issues/201311/drone-uav-pilot-assassination",
+      "link": "gq.com"
     }
   ]
   produce(url, sample)
