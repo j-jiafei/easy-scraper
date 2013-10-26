@@ -1,10 +1,14 @@
-[
-  {
-    "title": "How to lose $172,222 a second for 45 minutes",
-    "link": "pythonsweetness.tumblr.com"
-  },
-  {
-    "title": "Dawn of Autonomous Corporations, Powered by Bitcoin",
-    "link": "btcgeek.com"
-  }
-]
+{
+  "url": "https://news.ycombinator.com",
+  "sample": [
+    {
+      "title": "Confessions of a Drone Warrior",
+      "link": "gq.com"
+    },
+    {
+      "title": "Extensionizr: Chrome extension boilerplate generator",
+      "link": "extensionizr.com"
+    }
+  ]
+}
+

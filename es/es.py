@@ -1,9 +1,8 @@
-# coding: utf-8
-
 import logging
 import sys
 import urllib2
 import re
+import json
 from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
@@ -54,19 +53,6 @@ def train_selector(tags, root=None):
   return ' > '.join([tag.name for tag in list(tags[0].parents)[::-1][2:]])
 
 if __name__ == '__main__':
-  logger.setLevel(logging.DEBUG)
   logging.basicConfig()
-  url = 'https://news.ycombinator.com/'
-  sample = [
-    {
-      "title": "Mac OS 10.9 – Infinity times your spam",
-      "url": "http://blog.fastmail.fm/2013/10/26/mac-os-10-9-infinity-times-your-spam/",
-      "link": "fastmail.fm",
-    },
-    {
-      "title": "Confessions of a Drone Warrior",
-      "url": "http://www.gq.com/news-politics/big-issues/201311/drone-uav-pilot-assassination",
-      "link": "gq.com"
-    }
-  ]
+  logger.setLevel(logging.DEBUG)
   produce(url, sample)
