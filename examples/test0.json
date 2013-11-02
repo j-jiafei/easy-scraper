@@ -1,14 +1,10 @@
-{
-  "url": "https://news.ycombinator.com",
-  "sample": [
-    {
-      "title": "Confessions of a Drone Warrior",
-      "link": "gq.com"
-    },
-    {
-      "title": "Extensionizr: Chrome extension boilerplate generator",
-      "link": "extensionizr.com"
-    }
-  ]
-}
-
+[
+  {
+    "title": "Confessions of a Drone Warrior",
+    "link": "gq.com"
+  },
+  {
+    "title": "Extensionizr: Chrome extension boilerplate generator",
+    "link": "extensionizr.com"
+  }
+]

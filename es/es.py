@@ -1,4 +1,4 @@
-"""
+""" CLI for EasyScraper
 """
 
 import argparse
@@ -9,20 +9,23 @@ from scraper import Scraper
 
 logger = logging.getLogger(__name__)
 
-def cmd():
+def es():
+  """ The function parses the arguments, train the scraper,
+  and generates the output based on the arguments. """
   parser = argparse.ArgumentParser()
-  parser.add_argument("sample")
+  parser.add_argument("sample", help="the sample file name")
+  parser.add_argument("url", help="the url of the page to be parsed")
   args = parser.parse_args()
-  sample = args.sample
-  sample_file = open(sample, "r")
-  sample_json = json.load(sample_file)
-  scraper = Scraper.train(sample_json)
+  logger.debug(args)
+  scraper = Scraper.train(json=args.sample, url=args.url)
+  if scraper is None:
+    logger.error("A scraper cannot be trained.")
+    return
+  result = scraper.parse(url=args.url)
+  logger.debug(json.dumps(result))
 
-  page_parser = es.produce(url, sample)
-  results = page_parser.parse(url)
-  logger.debug(json.dumps(results))
 
 if __name__ == "__main__":
   logging.basicConfig()
   logger.setLevel(logging.DEBUG)
-  cmd()
+  es()
