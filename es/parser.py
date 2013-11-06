@@ -1,4 +1,8 @@
+# local
+# library
 import logging
+from bs4 import BeautifulSoup
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -6,33 +10,38 @@ class Parser(object):
   """
   """
   @staticmethod
-  def train(url, json):
-    """ train produces a parser based on the url and json.
-    One drawback is that the json sample file may be obsolete.
+  def train(html, sample):
+    """ html is a stream of html text, and sample is given by user for the
+    page. The method returns a parser which can parse similar page as html, and
+    returns complete data items beside sample.
     """
-    result = urllib2.urlopen(url)
-    if not result:
-      logger.error('Cannot open the url')
-      return
-    soup = BeautifulSoup(result)
-    taglist = [[find_tag(soup, value) for value in item.values()] \
-        for item in sample]
+    logger.info("Starting training a parser")
+    soup = BeautifulSoup(html)
+    taglist = [[Parser.find_tag(soup, value) for value in item.values()] \
+        for item in sample if item is not None]
     logger.debug(taglist)
-    lcas = [lca(tagset) for tagset in taglist]
+    lcas = [Parser.lca(tagset) for tagset in taglist if tagset is not None]
     logger.debug(lcas)
-    item_selector = train_selector(lcas, root=None)
+    item_selector = Parser.train_selector(lcas, root=None)
     if not item_selector:
       logger.error('Cannot train an item selector')
       return None
     for item in soup.select(item_selector):
       print item.prettify()
-    return
+    return Parser()
 
-  def parse(url):
+  def parse(html):
+    """ html is a stream of html text. The method returns a list of items
+    parsed from thml.
     """
-    """
+    logger.info("Starting parsing a html")
+    pass
 
-  def _find_tag(soup, value):
+  def __init__(self):
+    pass
+
+  @staticmethod
+  def find_tag(soup, value):
     string = soup.find(text=value)
     if not string:
       string = soup.find(text=re.compile('.*' + value + '.*'))
@@ -40,17 +49,22 @@ class Parser(object):
       string = soup.find('a', href=value)
     return string
 
-  def _allsame(tup):
+  @staticmethod
+  def allsame(tup):
     return min([i == tup[0] for i in tup] + [True])
 
-  def _lca(tags):
+  @staticmethod
+  def lca(tags):
     if not tags:
       return None
-    paths = [list(tag.parents)[::-1] for tag in tags]
-    m = [allsame(t) for t in zip(*paths)]
+    paths = [list(tag.parents)[::-1] for tag in tags if tag is not None]
+    m = [Parser.allsame(t) for t in zip(*paths)]
     m.append(False)
     lca_index = m.index(False) - 1
     return paths[0][lca_index] if lca_index >= 0 else None
 
-  def _train_selector(tags, root=None):
+  @staticmethod
+  def train_selector(tags, root=None):
+    if not tags or not tags[0]:
+      return None
     return ' > '.join([tag.name for tag in list(tags[0].parents)[::-1][2:]])

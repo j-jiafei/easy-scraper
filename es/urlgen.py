@@ -1,3 +1,0 @@
-class UrlGenerator(object):
-  """
-  """
