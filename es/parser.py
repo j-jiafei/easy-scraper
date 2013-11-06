@@ -1,4 +1,3 @@
-# local
 # library
 import logging
 from bs4 import BeautifulSoup
@@ -18,16 +17,19 @@ class Parser(object):
     logger.info("Starting training a parser")
     soup = BeautifulSoup(html)
     taglist = [[Parser.find_tag(soup, value) for value in item.values()] \
-        for item in sample if item is not None]
+        for item in sample]
     logger.debug(taglist)
-    lcas = [Parser.lca(tagset) for tagset in taglist if tagset is not None]
+    lcas = [Parser.lca(tagset) for tagset in taglist]
     logger.debug(lcas)
     item_selector = Parser.train_selector(lcas, root=None)
     if not item_selector:
       logger.error('Cannot train an item selector')
       return None
-    for item in soup.select(item_selector):
-      print item.prettify()
+    logger.debug(item_selector)
+#    for item in soup.select(item_selector):
+#      logger.debug(item.prettify())
+    title_selector = Parser.train_selector(taglist[0], lcas[0])
+    logger.debug(title_selector)
     return Parser()
 
   def parse(html):
@@ -65,6 +67,14 @@ class Parser(object):
 
   @staticmethod
   def train_selector(tags, root=None):
+    """ returns the path from root to tags[0]
+    """
+    logger.debug(tags)
+    logger.debug(root)
     if not tags or not tags[0]:
       return None
-    return ' > '.join([tag.name for tag in list(tags[0].parents)[::-1][2:]])
+    parents = list(tags[0].parents)
+    if root and root in parents:
+      parents = parents[0:parents.index(root) + 1]
+    logger.debug(len(parents))
+    return ' > '.join([tag.name for tag in parents[::-1]])
